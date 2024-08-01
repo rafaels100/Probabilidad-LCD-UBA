@@ -10,7 +10,7 @@ El orden en que pinta importa, por lo que son las permutaciones, no las combinac
 Pues simboliza pintar el objeto
 """
 RTA = 7**2
-print(f"\n2)a) RTA: La cantidad de formas en que puede pintar la mesa y la silla son {RTA}\n")
+print(f"\n2)a) RTA: La cantidad de formas en que puede pintar la mesa y la silla son {RTA}")
 
 #-------------------------------------------------
 """
@@ -35,7 +35,7 @@ for i in range(0, 8):
     #print(f"{i} pares de media primer cajon y {7 - i} pares de media en el segundo")
     contador += 1
 
-print(f"\n2)b) RTA: Hay {contador} posibles formas de ordenar los pares de medias\n")
+print(f"\n2)b) RTA: Hay {contador} posibles formas de ordenar los pares de medias")
 
 """
 2)c)
@@ -146,3 +146,24 @@ Cuando tenemos estos temas de dos clases de objetos indistinguibles entre si, co
 Las personas son las sillas, y elijo a k personas para ser los portadores de los caramelos/objetos que quiero repartir. El resto de n - k
 personas van a tener que portar los otros objetos indefectiblemente (si alcanzan).
 """
+
+"""
+2)d)
+Beto tiene que decidir los resultados de un consurso en que participan 7 personas y hay premio para el primero y el segundo.
+De cuantas formas puede hacerlo?
+"""
+"""
+Este combiene pensarlo desde las sillas: Son las permutaciones.
+"""
+RTA = 7 * 6 #pues me interesan las permutaciones entre el primer y segundo lugar
+print(f"\n2)d) RTA : Hay {RTA} formas de hacerlo")
+
+"""
+2)e)
+Ana tiene 7 libros distintos y debe elegir 2 para llevarse al viaje. De cuantas maneras puede hacerlo?
+"""
+"""
+Aqui no importa el orden. Es el numero combinatorio
+"""
+RTA = math.comb(7, 2)
+print(f"\n2)e) RTA : Tiene {RTA} formas de hacerlo")
