@@ -35,4 +35,4 @@ cant_permut_con_rep = math.comb(len(A), len(A)) * math.factorial(len(A))
 cant_permut = cant_permut_con_rep / math.factorial(repet_I + repet_B + repet_A)
 
 print(cant_permut)
-print(math.factorial(10)/math.factorial(repet_I + repet_B + repet_A))
+print(math.factorial(10)/math.factorial(math.factorial(repet_I) * math.factorial(repet_B) * math.factorial(repet_A)))
