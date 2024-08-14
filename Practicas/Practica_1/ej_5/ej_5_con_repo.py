@@ -5,24 +5,16 @@ from math import factorial
 
 """
 5)
-Este ejercicio nos plantea sacar n bolitas, sin reposicion, de un bolillero con bolitas numeradas de 1 a N.
+Este ejercicio nos plantea sacar n bolitas de un bolillero con bolitas numeradas de 1 a N.
 
 a) Proba de que se extraiga la bolita numero m en la k-esima extraccion?
 
 b) Proba de que se extraiga la bolilla m?
-
-c) El maximo numero obtenido sea menor o igual a m?
-
-d) El maximo numero obtenido sea m?
-
-?) El maximo numero obtenido sea mayor o igual a m?
-
-e) El maximo numero obtenido este entre a y b? Con n <= a < b <= N
 """
 
 
 
-def experimento(N, n, m, k, a, b):
+def experimento(N, n, m, k):
     #Primero, calculo el espacio muestral con reposicion, y luego elimino los elementos que no son validos.
     #El espacio muestral S de los resultados de todas las n sacadas de bolillas de 1 a N (con reposicion, es como tirar un dado este S)
     S = list(product(*[range(1, N + 1) for _ in range(0, n)]))
@@ -61,7 +53,6 @@ def experimento(N, n, m, k, a, b):
     #segun mis calculos, la probabilidad de que se extraiga la bolita m en la k-esima extraccion es de
     #proba_m_k_teo = ((N-1)/N)**(k-1) * 1/(N-k+1) Esta sirve para extraccion con reposicion
     proba_m_k_teo = np.prod([(N-j)/(N-j+1) for j in range(1, k)]) * 1/(N-k+1)
-    proba_m_k_teo = 1/N
     #compruebo, buscando cual es la proporcion de puntos muestrales que obtuve experimentalmente que cumplen con lo pedido, sobre el 
     #total de experimentos que corri
     evento_m_k = [elem for elem in RESULTADOS if elem[k-1] == m]
@@ -90,58 +81,10 @@ def experimento(N, n, m, k, a, b):
     #print("Deberian coincidir: ", card_evento_no_m, len(evento_no_m))
     proba_no_m_exp = card_evento_no_m / cant_exp
     print("\nProba del complemente de m teorica: ", proba_no_m_teo, " Proba experimental: ", proba_no_m_exp)
-    
-    #c) El maximo numero obtenido sea menor o gual a m
-    #La proba obtenida de la teoria es
-    proba_max_menig_m_teo =  ((factorial(m) * factorial(N-n))/(factorial(N) * factorial(m-n)))
-    evento_max_menig_m = [elem for elem in RESULTADOS if max(elem) <= m]
-    #print(evento_menig_m)
-    card_evento_max_menig_m = len(evento_max_menig_m)
-    #la probabilidad experimental es
-    proba_max_menig_m_exp = card_evento_max_menig_m / cant_exp
-    print("\nc) Proba maximo elemento sea menor o igual a m teorica: ", proba_max_menig_m_teo, " Proba experimental: ", proba_max_menig_m_exp)
-    
-    #d) El maximo numero obtenido sea m?
-    proba_max_m_teo = n * ((factorial(m-1) * factorial(N-n))/(factorial(N) * factorial(m-n)))
-    evento_max_m = [elem for elem in RESULTADOS if max(elem) == m]
-    #print(evento_max_m)
-    card_evento_max_m = len(evento_max_m)
-    proba_max_m_exp = card_evento_max_m / cant_exp
-    print("\nd) Proba maximo elemento sea m teorica: ", proba_max_m_teo, " Proba experimental: ", proba_max_m_exp)
-    
-    #?) El maximo numero obtenido sea mayor o igual a m
-    #Aqui puedo obtener una formula mediante hacer ejemplos como hice en a,b,c,d, o puedo usar lo obtenido previamente
-    #para calcular esta probabilidad. Hago ambos:
-    #proba_max_mayig_m_teo_1 = (factorial(N-m+1) * factorial(N-n)) / (factorial(N) * factorial(N-m+1-n)) NO FUNCIONA, SE ROMPE EL DENOMINADOR para ciertos m
-    #de los calculos anteriores deberiamos obtener que
-    proba_max_mayig_m_teo = 1 - proba_max_menig_m_teo + proba_max_m_teo
-    #compruebo
-    #print(f"Estas dos probas deberian ser iguales {proba_max_mayig_m_teo} {proba_max_mayig_m_teo_1}") La proba de formula no funciono, pero la otra si
-    evento_max_mayig_m = [elem for elem in RESULTADOS if max(elem) >= m]
-    #print(evento_menig_m)
-    card_evento_max_mayig_m = len(evento_max_mayig_m)
-    #la probabilidad experimental es
-    proba_max_mayig_m_exp = card_evento_max_mayig_m / cant_exp
-    print("\n?) Proba maximo elemento sea mayor o igual a m teorica: ", proba_max_mayig_m_teo, " Proba experimental: ", proba_max_mayig_m_exp)
-    
-    #e)  El maximo numero obtenido este entre a y b? Con n <= a < b <= N
-    #resultado teorico
-    proba_max_a_b_teo = (factorial(b) * factorial(N-n)) / (factorial(N) * factorial(b-n)) - \
-                        (factorial(a)*factorial(N-n)) / (factorial(N)*factorial(a-n)) + \
-                        (n * factorial(a-1) * factorial(N-n)) / (factorial(N) * factorial(a-n)) 
-    #resultado experimental
-    evento_max_a_b = [elem for elem in RESULTADOS if a <= max(elem) <= b]
-    print(evento_max_a_b)
-    card_evento_max_a_b = len(evento_max_a_b)
-    proba_max_a_b_exp = card_evento_max_a_b / cant_exp
-    print("\ne) Proba maximo elemento este entre a y b teorica: ", proba_max_a_b_teo, " Proba experimental: ", proba_max_a_b_exp)
     return
 
-N = 9
+N = 6
 n = 4
-m = 7
+m = 3
 k = 3
-#a, b tales que n <= a < b <= N
-a = 5
-b = 8
-experimento(N, n, m, k, a, b)
+experimento(N, n, m, k)
