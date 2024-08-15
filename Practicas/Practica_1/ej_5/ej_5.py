@@ -1,7 +1,7 @@
 from itertools import chain, combinations, product
 import numpy as np
 import random
-from math import factorial
+from math import factorial, comb
 
 """
 5)
@@ -18,6 +18,8 @@ d) El maximo numero obtenido sea m?
 ?) El maximo numero obtenido sea mayor o igual a m?
 
 e) El maximo numero obtenido este entre a y b? Con n <= a < b <= N
+
+f) Proba de que los numeros de las bolillas en el orden que fueron extraidas constituyan una sucesion estrictamente creciente?
 """
 
 
@@ -78,8 +80,11 @@ def experimento(N, n, m, k, a, b):
     #compruebo buscando la proporcion de puntos muestrales que tienen a m sobre el total de experimentos realizados
     evento_m = [elem for elem in RESULTADOS if m in elem]
     card_evento_m = len(evento_m)
+    evento_m_teo = [elem for elem in S if m in elem]
+    card_evento_m_teo = len(evento_m_teo)
+    print("\nCardinal de evento m: ", card_evento_m_teo, "Tamaño del espacio muestral: ", card_S, "Proba de m: ", card_evento_m_teo / card_S)
     proba_m_exp = card_evento_m / cant_exp
-    print("\nb) Proba teorica de que ocurra el evento m: ", proba_m_teo, " Proba experimental: ", proba_m_exp)
+    print("b) Proba teorica de que ocurra el evento m: ", proba_m_teo, " Proba experimental: ", proba_m_exp)
     
     #compruebo calculando el complemento teoricamente, que es 1 - el resultado teorico obtenido
     proba_no_m_teo = 1 - proba_m_teo
@@ -131,11 +136,62 @@ def experimento(N, n, m, k, a, b):
                         (n * factorial(a-1) * factorial(N-n)) / (factorial(N) * factorial(a-n)) 
     #resultado experimental
     evento_max_a_b = [elem for elem in RESULTADOS if a <= max(elem) <= b]
-    print(evento_max_a_b)
+    #print(evento_max_a_b)
     card_evento_max_a_b = len(evento_max_a_b)
     proba_max_a_b_exp = card_evento_max_a_b / cant_exp
     print("\ne) Proba maximo elemento este entre a y b teorica: ", proba_max_a_b_teo, " Proba experimental: ", proba_max_a_b_exp)
+    
+    #f) Proba de que los numeros de las bolillas en el orden que fueron extraidas constituyan una sucesion estrictamente creciente?
+    #No se me ocurre aun una respuesta teorica para este, pero puedo obtenerla experimentalmente al menos
+    
+    #Puedo obtener una especie de pseudoproba teorica si busco en todo el espacio muestral
+    evento_suc_crec_teo = [elem for elem in S if np.all(np.diff(elem) > 0)]
+    #print(evento_suc_crec_teo, len(evento_suc_crec_teo))
+    proba_suc_crec_pseudoteo = len(evento_suc_crec_teo) / card_S
+    #puedo incluso hacerlo recursivamente
+    evento_suc_crec_rec = sucesiones_crecientes(n, N)
+    print(evento_suc_crec_rec, len(evento_suc_crec_rec))
+    #busco las sucesiones crecientes que salieron en los experimentos
+    evento_suc_crec = [elem for elem in RESULTADOS if np.all(np.diff(elem) > 0)]
+    #print(evento_suc_crec)
+    proba_suc_crec_exp = len(evento_suc_crec) / cant_exp
+    print(f"\nf) Proba de sucesion creciente resultado pseudoteorico: {proba_suc_crec_pseudoteo} Resultado experimental: {proba_suc_crec_exp}")
+    print(1/factorial(n))
     return
+    
+
+#para el ejericio f
+def rec_suc_crec(i, S, U, camino):
+    if i == n:
+        S.append(camino[:])
+        return
+    for elem in U:
+        #como es extraccion sin reposicion, debo tener cuidado de no repetir elementos en mis puntos muestrales de S
+        if elem not in camino[:i]:
+            #Con este if me aseguro de que el camino que voy a seguir ahora no repite los elementos que use hasta este momento 
+            #(el i-esimo indice de la lista)
+            if i > 0:
+                #con este if me aseguro de no seguir ramas que no sean crecientes
+                if elem > camino[i-1]:
+                    camino[i] = elem
+                    rec_suc_crec(i + 1, S, U, camino)
+            else:
+                #si estoy en el primero me interesan seguir todas las ramas
+                camino[i] = elem
+                rec_suc_crec(i + 1, S, U, camino)
+    return
+
+
+def sucesiones_crecientes(n, N):
+    #variables necesarias para el ej5f
+    S = [] #donde guardare las sucesiones crecientes
+    camino = [0] * n
+    U = [i for i in range(1, N+1)]
+    rec_suc_crec(0, S, U, camino)
+    return S
+
+
+    
 
 N = 9
 n = 4
