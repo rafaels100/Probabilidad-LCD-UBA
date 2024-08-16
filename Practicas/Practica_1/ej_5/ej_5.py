@@ -211,7 +211,7 @@ def experimento(N, n, m, k, a, b):
     #no pude obtener una formula para contar la cantidad de puntos muestrales con combinatoria
     #segun chatGPT, por combinatoria se obtiene que la proba de obtener una sucesion creciente es de
     proba_suc_crec_teo = 1 / factorial(n) #still dunno why though
-    #sin embargo, si puedo hacer una recursion que cuente las ramas crecientes del arbol recursivo
+    #sin embargo, si puedo hacer una recursion que encuentre las ramas crecientes del arbol recursivo
     evento_suc_crec_teo_rec = sucesiones_crecientes(n, N)
     card_evento_suc_crec_teo_rec = len(evento_suc_crec_teo_rec)
     proba_suc_crec_teo_rec = card_evento_suc_crec_teo_rec / card_S
