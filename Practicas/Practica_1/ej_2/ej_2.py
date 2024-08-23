@@ -4,7 +4,7 @@ import random
 from math import factorial, comb
 
 """
-5)
+2)
 Este ejercicio nos plantea sacar n bolillas, sin reposicion, de un bolillero con bolitas numeradas de 1 a N.
 
 a) Proba de que se extraiga la bolilla m en la k-esima extraccion?
